@@ -13,16 +13,17 @@ def render_progressbar(total, iteration, prefix='', suffix='', length=10, fill='
     return '{0} |{1}| {2}% {3}'.format(prefix, pbar, percent, suffix)
 
 
+def notify_user(bot, chat_id, message):
+    bot.send_message(chat_id, message)
+
+
 def notify_progress(secs_left, bot, chat_id, message_id, seconds):
     current_progress = render_progressbar(seconds, secs_left)
     message = f'Осталось {secs_left} секунд\n{current_progress}'
     bot.update_message(chat_id, message_id, message)
-    if not secs_left:
-        message = 'Время вышло'
-        bot.send_message(chat_id, message)
 
 
-def parse_message(message, bot, chat_id):
+def parse_message(message, bot, chat_id, is_over_message):
     seconds = parse(message)
     if not seconds:
         bot.send_message(
@@ -31,6 +32,7 @@ def parse_message(message, bot, chat_id):
         return
     message_id = bot.send_message(chat_id, f'Таймер запущен на {seconds} секунд')
     bot.create_countdown(seconds, notify_progress, bot=bot, chat_id=chat_id, message_id=message_id, seconds=seconds)
+    bot.create_timer(seconds, notify_user, bot, chat_id, is_over_message)
 
 
 def main():
@@ -38,10 +40,11 @@ def main():
     env.read_env()
     bot_token = env('TG_BOT_TOKEN')
     chat_id = env('TG_CHAT_ID')
+    is_over_message = 'Время вышло'
     bot = Bot(bot_token)
     bot.send_message(chat_id, 'Бот запущен!')
     bot.send_message(chat_id, 'На сколько запустить таймер?')
-    bot.reply_on_message(parse_message, bot, chat_id)
+    bot.reply_on_message(parse_message, bot, chat_id, is_over_message)
     bot.run_bot()
 
 
