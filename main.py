@@ -2,7 +2,6 @@ from environs import Env
 from pytimeparse import parse
 
 from ptbot import Bot
-import pymorphy2
 
 
 def render_progressbar(total, iteration, prefix='', suffix='', length=10, fill='█', zfill='░'):
