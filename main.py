@@ -41,6 +41,7 @@ def main():
     chat_id = env('TG_CHAT_ID')
     bot = Bot(bot_token)
     bot.send_message(chat_id, 'Бот запущен!')
+    bot.send_message(chat_id, 'На сколько запустить таймер?')
     bot.reply_on_message(parse_message, bot, chat_id)
     bot.run_bot()
 
