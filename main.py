@@ -40,7 +40,7 @@ def main():
     env = Env()
     env.read_env()
     bot_token = env('TG_BOT_TOKEN')
-    chat_id = env.int('TG_CHAT_ID')
+    chat_id = env('TG_CHAT_ID')
     bot = Bot(bot_token)
     bot.send_message(chat_id, 'Бот запущен!')
     morph = pymorphy2.MorphAnalyzer()
