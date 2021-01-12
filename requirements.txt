@@ -1,0 +1,4 @@
+python-telegram-bot==13.1
+environs~=9.3.0
+pytimeparse~=1.1.8
+pymorphy2~=0.9.1
